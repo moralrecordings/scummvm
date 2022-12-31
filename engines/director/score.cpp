@@ -737,7 +737,6 @@ void Score::renderPaletteCycle(uint16 frameId, RenderMode mode) {
 		return;
 	// 30 (the maximum) is actually unbounded
 	int delay = speed == 30 ? 10 : 1000 / speed;
-	// Palette indexes are in reverse order thanks to transformColor
 	if (_frames[frameId]->_palette.colorCycling) {
 		// Cycle the colors of a chosen palette
 		int firstColor = _frames[frameId]->_palette.firstColor;
