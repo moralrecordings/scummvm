@@ -51,9 +51,9 @@ public:
 	~MacCursor();
 
 	/** Return the cursor's width. */
-	uint16 getWidth() const { return 16; }
+	uint16 getWidth() const { return _width; }
 	/** Return the cursor's height. */
-	uint16 getHeight() const { return 16; }
+	uint16 getHeight() const { return _height; }
 	/** Return the cursor's hotspot's x coordinate. */
 	uint16 getHotspotX() const { return _hotspotX; }
 	/** Return the cursor's hotspot's y coordinate. */
@@ -77,6 +77,8 @@ protected:
 	byte *_surface;
 	byte _palette[256 * 3];
 
+	uint16 _width;    ///< The cursor's width.
+	uint16 _height;   ///< The cursor's height.
 	uint16 _hotspotX; ///< The cursor's hotspot's x coordinate.
 	uint16 _hotspotY; ///< The cursor's hotspot's y coordinate.
 

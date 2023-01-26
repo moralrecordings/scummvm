@@ -29,6 +29,8 @@ MacCursor::MacCursor() {
 	_surface = 0;
 	memset(_palette, 0, 256 * 3);
 
+	_width = 0;
+	_height = 0;
 	_hotspotX = 0;
 	_hotspotY = 0;
 }
@@ -57,6 +59,8 @@ bool MacCursor::readFromStream(Common::SeekableReadStream &stream, bool forceMon
 
 bool MacCursor::readFromCURS(Common::SeekableReadStream &stream, byte monochromeInvertedPixelColor) {
 	// Grab B/W icon data
+	_width = 16;
+	_height = 16;
 	_surface = new byte[16 * 16];
 	for (int i = 0; i < 32; i++) {
 		byte imageByte = stream.readByte();
@@ -128,8 +132,9 @@ bool MacCursor::readFromCRSR(Common::SeekableReadStream &stream, bool forceMonoc
 	stream.readUint16BE(); // packType
 	stream.readUint32BE(); // packSize
 
-	stream.readUint32BE(); // hRes
-	stream.readUint32BE(); // vRes
+	_width = (uint16)stream.readUint32BE(); // hRes
+	_height = (uint16)stream.readUint32BE(); // vRes
+	_surface = new byte[_width * _height];
 
 	stream.readUint16BE(); // pixelType
 	stream.readUint16BE(); // pixelSize
