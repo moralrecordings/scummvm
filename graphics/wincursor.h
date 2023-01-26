@@ -66,6 +66,47 @@ struct WinCursorGroup {
 	static WinCursorGroup *createCursorGroup(Common::WinResources *exe, const Common::WinResourceID &id);
 };
 
+/** A Windows cursor. */
+class WinCursor : public Cursor {
+public:
+	WinCursor();
+	~WinCursor();
+
+	/** Return the cursor's width. */
+	uint16 getWidth() const override;
+	/** Return the cursor's height. */
+	uint16 getHeight() const override;
+	/** Return the cursor's hotspot's x coordinate. */
+	uint16 getHotspotX() const override;
+	/** Return the cursor's hotspot's y coordinate. */
+	uint16 getHotspotY() const override;
+	/** Return the cursor's transparent key. */
+	byte getKeyColor() const override;
+
+	const byte *getSurface() const override { return _surface; }
+
+	const byte *getPalette() const override { return _palette; }
+	byte getPaletteStartIndex() const override { return 0; }
+	uint16 getPaletteCount() const override { return 256; }
+
+	/** Read the cursor's data out of a stream. */
+	bool readFromStream(Common::SeekableReadStream &stream);
+
+private:
+	byte *_surface;
+	byte _palette[256 * 3];
+
+	uint16 _width;    ///< The cursor's width.
+	uint16 _height;   ///< The cursor's height.
+	uint16 _hotspotX; ///< The cursor's hotspot's x coordinate.
+	uint16 _hotspotY; ///< The cursor's hotspot's y coordinate.
+	byte   _keyColor; ///< The cursor's transparent key
+
+	/** Clear the cursor. */
+	void clear();
+};
+
+
 /**
  * Create a Cursor for the default Windows cursor.
  *
