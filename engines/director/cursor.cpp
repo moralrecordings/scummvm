@@ -157,6 +157,7 @@ void Cursor::readBuiltinType(Datum resourceId) {
 void Cursor::readFromResource(Datum resourceId) {
 	if (resourceId == _cursorResId)
 		return;
+	warning("Looking for cursor %s", resourceId.asString(true).c_str());
 
 	if (resourceId.type != INT) {
 		warning("Cursor:readFromResource is not of type INT");
@@ -196,31 +197,38 @@ void Cursor::readFromResource(Datum resourceId) {
 			delete cursorStream;
 		}
 
-		// TODO: figure out where to read custom cursor in windows platform
-		// currently, let's just set arrow for default one.
-		if (g_director->getPlatform() == Common::kPlatformWindows) {
-			resetCursor(Graphics::kMacCursorArrow, true, resourceId);
-			break;
-		}
-
-		// for win platform, try the cursor from exe
+		// For Windows, check if the cursor resource is in the EXE
 		if (!readSuccessful && g_director->getPlatform() == Common::kPlatformWindows) {
 			// i'm not sure, in jman we have cursor id 2, 3, 4. and custom cursor id 128 129 130
 			uint id = (resourceId.asInt() & 0x7f) + 2;
 			for (uint i = 0; i < g_director->_winCursor.size(); i++) {
 				for (uint j = 0; j < g_director->_winCursor[i]->cursors.size(); j++) {
 					if (id == g_director->_winCursor[i]->cursors[j].id.getID()) {
+						Graphics::WinCursor *source = (Graphics::WinCursor *)g_director->_winCursor[i]->cursors[j].cursor;
+						readFromWinCursor(source);
 						resetCursor(Graphics::kMacCursorCustom, false, Datum((int)id));
-						readSuccessful = true;
+						return;
 					}
 				}
 			}
+			warning("Could not find a matching Windows cursor with id %d", id);
 		}
 
 		// fallback method. try to use builtin cursor by regarding resourceId as a single byte.
 		if (!readSuccessful)
 			readBuiltinType(resourceId.asInt() & 0x7f);
 	}
+}
+
+void Cursor::readFromWinCursor(Graphics::WinCursor *source) {
+	_width = source->getWidth();
+	_height = source->getHeight();
+	_hotspotX = source->getHotspotX();
+	_hotspotY = source->getHotspotY();
+	_keyColor = source->getKeyColor();
+	_surface = new byte[_width * _height];
+	memcpy(_surface, source->getSurface(), _width*_height);
+	memcpy(_palette, source->getPalette(), source->getPaletteCount() * 3);
 }
 
 void Cursor::resetCursor(Graphics::MacCursorType type, bool shouldClear, Datum resId) {

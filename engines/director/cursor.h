@@ -30,6 +30,7 @@
 namespace Graphics {
 class ManagedSurface;
 class MacCursor;
+class WinCursor;
 }
 
 namespace Director {
@@ -45,6 +46,7 @@ class Cursor : public Graphics::MacCursor {
 	void readFromCast(Datum casts);
 	void readFromResource(Datum resourceId);
 	void readBuiltinType(Datum resourceId);
+	void readFromWinCursor(Graphics::WinCursor *source);
 
 	bool isEmpty() {return Datum(0).equalTo(_cursorResId);}
 	bool operator==(const Cursor &c);

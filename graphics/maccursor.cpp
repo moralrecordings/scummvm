@@ -33,6 +33,7 @@ MacCursor::MacCursor() {
 	_height = 0;
 	_hotspotX = 0;
 	_hotspotY = 0;
+	_keyColor = 0xFF;
 }
 
 MacCursor::~MacCursor() {
@@ -89,6 +90,8 @@ bool MacCursor::readFromCURS(Common::SeekableReadStream &stream, byte monochrome
 	_palette[1 * 3 + 0] = 0xff;
 	_palette[1 * 3 + 1] = 0xff;
 	_palette[1 * 3 + 2] = 0xff;
+
+	_keyColor = 0xFF;
 
 	return !stream.eos();
 }
