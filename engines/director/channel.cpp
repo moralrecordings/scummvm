@@ -543,9 +543,11 @@ void Channel::replaceSprite(Sprite *nextSprite) {
 }
 
 void Channel::setWidth(int w) {
-	if (!(_sprite->_cast && _sprite->_cast->_type == kCastShape) && !_sprite->_stretch)
-		return;
-	_width = MAX<int>(w, 0);
+	if (_sprite->_puppet) {
+		if (!(_sprite->_cast && _sprite->_cast->_type == kCastShape) && !_sprite->_stretch)
+			return;
+		_width = MAX<int>(w, 0);
+	}
 
 	if (!_sprite->_puppet && g_director->getVersion() >= 600) {
 		// Based on Director in a Nutshell, page 15
@@ -554,9 +556,11 @@ void Channel::setWidth(int w) {
 }
 
 void Channel::setHeight(int h) {
-	if (!(_sprite->_cast && _sprite->_cast->_type == kCastShape) && !_sprite->_stretch)
-		return;
-	_height = MAX<int>(h, 0);
+	if (_sprite->_puppet) {
+		if (!(_sprite->_cast && _sprite->_cast->_type == kCastShape) && !_sprite->_stretch)
+			return;
+		_height = MAX<int>(h, 0);
+	}
 
 	if (!_sprite->_puppet && g_director->getVersion() >= 600) {
 		// Based on Director in a Nutshell, page 15
@@ -565,7 +569,7 @@ void Channel::setHeight(int h) {
 }
 
 void Channel::setBbox(int l, int t, int r, int b) {
-	if (_sprite->_stretch) {
+	if (_sprite->_puppet || _sprite->_stretch) {
 		if (!(_sprite->_cast && _sprite->_cast->_type == kCastShape) && !_sprite->_stretch)
 			return;
 		_width = r - l;
@@ -589,13 +593,15 @@ void Channel::setBbox(int l, int t, int r, int b) {
 }
 
 void Channel::setPosition(int x, int y, bool force) {
-	Common::Point newPos(x, y);
-	if (_constraint > 0 && _score && _constraint <= _score->_channels.size()) {
-		Common::Rect constraintBbox = _score->_channels[_constraint]->getBbox();
-		newPos.x = MIN(constraintBbox.right, MAX(constraintBbox.left, newPos.x));
-		newPos.y = MIN(constraintBbox.bottom, MAX(constraintBbox.top, newPos.y));
+	if (_sprite->_puppet || force) {
+		Common::Point newPos(x, y);
+		if (_constraint > 0 && _score && _constraint <= _score->_channels.size()) {
+			Common::Rect constraintBbox = _score->_channels[_constraint]->getBbox();
+			newPos.x = MIN(constraintBbox.right, MAX(constraintBbox.left, newPos.x));
+			newPos.y = MIN(constraintBbox.bottom, MAX(constraintBbox.top, newPos.y));
+		}
+		_currentPoint = newPos;
 	}
-	_currentPoint = newPos;
 
 	if (!_sprite->_puppet && g_director->getVersion() >= 600) {
 		// Based on Director in a Nutshell, page 15
