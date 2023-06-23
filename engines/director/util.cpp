@@ -648,6 +648,36 @@ Common::String pathMakeRelative(Common::String path, bool recursive, bool addext
 	return wrappedPathMakeRelative(path, recursive, addexts, directory, false);
 }
 
+Common::String matchPartialPath(Common::String &path, bool directory) {
+	Common::String convPath = path;
+	bool success = false;
+	while (convPath.contains(g_director->_dirSeparator)) {
+		int pos = convPath.find(g_director->_dirSeparator);
+		convPath = Common::String(&convPath.c_str()[pos + 1]);
+
+		debugN(9, "%s", recIndent());
+		debug(9, "matchPartialPath(): try %s", convPath.c_str());
+
+		if (!testPath(convPath, directory)) {
+			// If we were supplied a path with subdirectories,
+			// attempt to combine it with the current movie path at every iteration
+			Common::String locPath = Common::normalizePath(g_director->getCurrentPath() + convPath, g_director->_dirSeparator);
+			debugN(9, "%s", recIndent());
+			debug(9, "matchPartialPath(): try %s", locPath.c_str());
+
+			if (!testPath(locPath, directory)) {
+				continue;
+			}
+		}
+		success = true;
+		break;
+	}
+	if (!success)
+		return Common::String();
+
+	return convPath;
+}
+
 
 // if we are finding the file path, then this func will return exactly the executable file path
 // if we are finding the directory path, then we will get the path relative to the game data dir.
@@ -684,32 +714,11 @@ Common::String wrappedPathMakeRelative(Common::String path, bool recursive, bool
 	// Now try to search the file
 	bool opened = false;
 
-	while (convPath.contains(g_director->_dirSeparator)) {
-		int pos = convPath.find(g_director->_dirSeparator);
-		convPath = Common::String(&convPath.c_str()[pos + 1]);
-
-		debugN(9, "%s", recIndent());
-		debug(9, "wrappedPathMakeRelative(): s3 try %s", convPath.c_str());
-
-		if (!testPath(convPath, directory)) {
-			// If we were supplied a path with subdirectories,
-			// attempt to combine it with the current movie path at every iteration
-			Common::String locPath = Common::normalizePath(g_director->getCurrentPath() + convPath, g_director->_dirSeparator);
-			debugN(9, "%s", recIndent());
-			debug(9, "wrappedPathMakeRelative(): s3.1 try %s", locPath.c_str());
-
-			if (!testPath(locPath, directory)) {
-				debugN(9, "%s", recIndent());
-				debug(9, "wrappedPathMakeRelative(): s3.1 -- not found %s", locPath.c_str());
-				continue;
-			}
-		}
-
-		debug(9, "wrappedPathMakeRelative(): s3 converted %s -> %s", path.c_str(), convPath.c_str());
-
+	Common::String result = matchPartialPath(convPath, directory);
+	if (!result.empty()) {
+		convPath = result;
+		debug(9, "wrappedPathMakeRelative(): s3 found %s", convPath.c_str());
 		opened = true;
-
-		break;
 	}
 
 	if (!opened) {
@@ -726,26 +735,13 @@ Common::String wrappedPathMakeRelative(Common::String path, bool recursive, bool
 		debug(9, "wrappedPathMakeRelative(): s4.1 -- not found %s", initialPath.c_str());
 
 		// Now try to search the file
-		while (convPath.contains(g_director->_dirSeparator)) {
-			int pos = convPath.find(g_director->_dirSeparator);
-			convPath = Common::String(&convPath.c_str()[pos + 1]);
-
-			debugN(9, "%s", recIndent());
-			debug(9, "wrappedPathMakeRelative(): s5 try %s", convPath.c_str());
-
-			if (!testPath(convPath, directory)) {
-				debugN(9, "%s", recIndent());
-				debug(9, "wrappedPathMakeRelative(): s5 -- not found %s", convPath.c_str());
-				continue;
-			}
-
-			debugN(9, "%s", recIndent());
-			debug(9, "wrappedPathMakeRelative(): s5 converted %s -> %s", path.c_str(), convPath.c_str());
-
+		Common::String result = matchPartialPath(convPath, directory);
+		if (!result.empty()) {
+			convPath = result;
+			debug(9, "wrappedPathMakeRelative(): s5 found %s", convPath.c_str());
 			opened = true;
-
-			break;
 		}
+
 	}
 
 	if (!opened && recursive && !directory) {
