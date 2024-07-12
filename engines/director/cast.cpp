@@ -59,7 +59,7 @@
 
 namespace Director {
 
-Cast::Cast(Movie *movie, uint16 castLibID, bool isShared, bool isExternal) {
+Cast::Cast(Movie *movie, LingoArchive *lingoArch, uint16 castLibID, bool isShared, bool isExternal) {
 	_movie = movie;
 	_vm = _movie->getVM();
 	_lingo = _vm->getLingo();
@@ -69,7 +69,7 @@ Cast::Cast(Movie *movie, uint16 castLibID, bool isShared, bool isExternal) {
 	_isExternal = isExternal;
 	_loadMutex = true;
 
-	_lingoArchive = new LingoArchive(this);
+	_lingoArchive = lingoArch;
 
 	_castArrayStart = _castArrayEnd = 0;
 
@@ -119,7 +119,6 @@ Cast::~Cast() {
 		delete it._value;
 
 	delete _loadedCast;
-	delete _lingoArchive;
 
 	delete _chunkResolver;
 	delete _lingodec;
@@ -317,6 +316,8 @@ void Cast::setArchive(Archive *archive) {
 	} else {
 		_macName = archive->getFileName();
 	}
+	if (_lingoArchive)
+		_lingoArchive->moviePath = _castArchive->getPathName();
 }
 
 void Cast::loadArchive() {
@@ -1242,7 +1243,7 @@ void Cast::loadLingoContext(Common::SeekableReadStreamEndian &stream) {
 				debugC(1, kDebugCompile, "Cast::loadLingoContext: Script %d is used but empty", i);
 				continue;
 			}
-			_lingoArchive->addCodeV4(*(r = _castArchive->getResource(MKTAG('L', 's', 'c', 'r'), entry.index)), i, _macName, _version);
+			_lingoArchive->addCodeV4(*(r = _castArchive->getResource(MKTAG('L', 's', 'c', 'r'), entry.index)), i, _macName, _version, this);
 			delete r;
 		}
 

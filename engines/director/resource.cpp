@@ -100,7 +100,7 @@ Common::Error Window::loadInitialMovie() {
 
 			stream->read(script, size);
 
-			LingoArchive *mainArchive = g_director->getCurrentMovie()->getMainLingoArch();
+			LingoArchive *mainArchive = g_director->getCurrentMovie()->getLingoArch(DEFAULT_CAST_LIB);
 			mainArchive->addCode(Common::U32String(script, Common::kMacRoman), kMovieScript, 65535);
 			_currentMovie->processEvent(kEventStartUp);
 
@@ -286,7 +286,7 @@ void Window::loadINIStream() {
 		iniStream->read(script, iniStream->size());
 
 		_currentMovie = new Movie(this);
-		_currentMovie->getMainLingoArch()->addCode(Common::U32String(script, Common::kWindows1252), kMovieScript, 0);
+		_currentMovie->getLingoArch(DEFAULT_CAST_LIB)->addCode(Common::U32String(script, Common::kWindows1252), kMovieScript, 0);
 		_currentMovie->processEvent(kEventStartUp);
 		delete _currentMovie;
 		_currentMovie = nullptr;

@@ -22,10 +22,6 @@
 #ifndef DIRECTOR_MOVIE_H
 #define DIRECTOR_MOVIE_H
 
-#define DEFAULT_CAST_LIB 1
-#define SHARED_CAST_LIB -1337
-#define CAST_LIB_OFFSET 1023
-
 namespace Common {
 struct Event;
 class ReadStreamEndian;
@@ -41,6 +37,7 @@ class CastMember;
 class DirectorEngine;
 class Lingo;
 struct LingoArchive;
+struct LingoCollection;
 struct LingoEvent;
 class ScriptContext;
 class Window;
@@ -102,6 +99,7 @@ public:
 	Cast *getCast() const { return _casts.getValOrDefault(DEFAULT_CAST_LIB, nullptr); }
 	Cast *getCast(CastMemberID memberID);
 	Cast *getSharedCast() const { return _sharedCast; }
+	void setSharedCast(Cast *cast) { _sharedCast = cast; }
 	const Common::HashMap<int, Cast *> *getCasts() const { return &_casts; }
 	Score *getScore() const { return _score; }
 
@@ -121,7 +119,8 @@ public:
 	bool isValidCastMember(CastMemberID memberID, CastType type);
 	const Stxt *getStxt(CastMemberID memberID);
 
-	LingoArchive *getMainLingoArch();
+	Common::SharedPtr<LingoCollection> getLingoColl() { return _lingoColl; };
+	LingoArchive *getLingoArch(int castLib);
 	LingoArchive *getSharedLingoArch();
 	ScriptContext *getScriptContext(ScriptType type, CastMemberID id);
 	Symbol getHandler(const Common::String &name);
@@ -158,7 +157,6 @@ public:
 	uint32 _lastKeyTime;
 	uint32 _lastTimerReset;
 	uint32 _stageColor;
-	Cast *_sharedCast;
 	bool _allowOutdatedLingo;
 	bool _remapPalettesWhenNeeded;
 	Common::String _createdBy;
@@ -198,6 +196,8 @@ private:
 	DirectorEngine *_vm;
 	Lingo *_lingo;
 	Cast *_cast;
+	Cast *_sharedCast;
+	Common::SharedPtr<LingoCollection> _lingoColl;
 	Common::HashMap<int, Cast *> _casts;
 	Common::HashMap<Common::String, int, Common::IgnoreCase_Hash, Common::IgnoreCase_EqualTo> _castNames;
 	Score *_score;

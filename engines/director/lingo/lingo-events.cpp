@@ -107,7 +107,7 @@ ScriptType Lingo::event2script(LEvent ev) {
 
 void Movie::setPrimaryEventHandler(LEvent event, const Common::String &code) {
 	debugC(3, kDebugLingoExec, "setting primary event handler (%s)", _lingo->_eventHandlerTypes[event]);
-	LingoArchive *mainArchive = getMainLingoArch();
+	LingoArchive *mainArchive = getLingoArch(DEFAULT_CAST_LIB);
 	mainArchive->primaryEventHandlers[event] = code;
 	mainArchive->replaceCode(code, kEventScript, event);
 }
@@ -326,7 +326,7 @@ void Movie::resolveScriptEvent(LingoEvent &event) {
 
 			// FIXME: shared cast movie scripts could come before main movie ones
 			// Movie scripts are fixed, so it's fine to look them up in advance.
-			LingoArchive *mainArchive = getMainLingoArch();
+			LingoArchive *mainArchive = getLingoArch(DEFAULT_CAST_LIB);
 			for (auto &it : mainArchive->scriptContexts[kMovieScript]) {
 				if (it._value->_eventHandlers.contains(event.event)) {
 					event.scriptType = kMovieScript;

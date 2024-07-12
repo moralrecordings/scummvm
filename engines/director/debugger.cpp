@@ -21,6 +21,7 @@
 
 #include "common/language.h"
 #include "common/platform.h"
+#include "common/ptr.h"
 #include "director/director.h"
 #include "director/debugger.h"
 #include "director/archive.h"
@@ -450,22 +451,15 @@ bool Debugger::cmdFuncs(int argc, const char **argv) {
 		debugPrintf("  [empty]\n");
 	}
 	debugPrintf("\n");
-	for (auto it : *movie->getCasts()) {
+	Common::SharedPtr<LingoCollection> lingoColl = movie->getLingoColl();
+	for (auto &it : lingoColl->archives) {
 		debugPrintf("Cast %d functions:\n", it._key);
-		Cast *cast = it._value;
-		if (cast && cast->_lingoArchive) {
-			debugPrintf("%s", cast->_lingoArchive->formatFunctionList("  ").c_str());
-		} else {
-			debugPrintf("  [empty]\n");
-		}
+		debugPrintf("%s", it._value->formatFunctionList("  ").c_str());
 		debugPrintf("\n");
 	}
-	debugPrintf("Shared cast functions:\n");
-	Cast *sharedCast = movie->getSharedCast();
-	if (sharedCast && sharedCast->_lingoArchive) {
-		debugPrintf("%s", sharedCast->_lingoArchive->formatFunctionList("  ").c_str());
-	} else {
-		debugPrintf("  [empty]\n");
+	if (lingoColl->sharedArchive) {
+		debugPrintf("Shared cast functions:\n");
+		debugPrintf("%s", lingoColl->sharedArchive->formatFunctionList("  ").c_str());
 	}
 	debugPrintf("\n");
 	debugPrintf("Frame script mappings:\n");
@@ -514,12 +508,19 @@ bool Debugger::cmdBacktrace(int argc, const char **argv) {
 
 bool Debugger::cmdDisasm(int argc, const char **argv) {
 	Lingo *lingo = g_director->getLingo();
+	Movie *movie = g_director->getCurrentMovie();
+	Common::SharedPtr<LingoCollection> lingoColl = movie->getLingoColl();
+	Common::HashMap<Common::String, LingoArchive *> lingoArchs;
+	for (auto &it : lingoColl->archives) {
+		if (it._value)
+			lingoArchs[Common::String::format("CastLib %d", it._key)] = it._value;
+	}
+	if (lingoColl->sharedArchive)
+		lingoArchs[Common::String("Shared cast")] = lingoColl->sharedArchive.get();
+
 	if (argc == 2) {
 		if (!strcmp(argv[1], "all")) {
-			Movie *movie = g_director->getCurrentMovie();
 			Score *score = movie->getScore();
-			Cast *targets[2] = {movie->getCast(), movie->getSharedCast()};
-			const char *targetNames[2] = {"Cast", "Shared cast"};
 			ScriptContext *csc = lingo->_state->context;
 			if (csc) {
 				debugPrintf("Functions attached to frame %d:\n", score->getCurrentFrameNum());
@@ -531,41 +532,36 @@ bool Debugger::cmdDisasm(int argc, const char **argv) {
 				debugPrintf("  [empty]\n");
 			}
 			debugPrintf("\n");
-			for (int t = 0; t < 2; t++) {
-				debugPrintf("%s functions:\n", targetNames[t]);
-				Cast *cast = targets[t];
-				if (cast && cast->_lingoArchive) {
-					for (int i = 0; i <= kMaxScriptType; i++) {
-						debugPrintf("  %s:\n", scriptType2str((ScriptType)i));
-						if (cast->_lingoArchive->scriptContexts[i].size() == 0)
-							debugPrintf("    [empty]\n");
+			for (auto &arch : lingoArchs) {
+				debugPrintf("%s functions:\n", arch._key.c_str());
+				for (int i = 0; i <= kMaxScriptType; i++) {
+					debugPrintf("  %s:\n", scriptType2str((ScriptType)i));
+					if (arch._value->scriptContexts[i].size() == 0)
+						debugPrintf("    [empty]\n");
 
-						for (auto &it : cast->_lingoArchive->scriptContexts[i]) {
-							for (auto &jt : it._value->_functionHandlers) {
-								debugPrintf("%s\n", g_lingo->formatFunctionBody(jt._value).c_str());
-							}
+					for (auto &it : arch._value->scriptContexts[i]) {
+						for (auto &jt : it._value->_functionHandlers) {
+							debugPrintf("%s\n", g_lingo->formatFunctionBody(jt._value).c_str());
 						}
 					}
-					debugPrintf("  Factories:\n");
-					if (cast->_lingoArchive->factoryContexts.empty()) {
-						debugPrintf("    [empty]\n");
-					} else {
-						for (auto it : cast->_lingoArchive->factoryContexts) {
-							debugPrintf("  %d:\n", it._key);
-							if (it._value->empty()) {
-								debugPrintf("    [empty]\n");
-							} else {
-								for (auto jt : *it._value) {
-									debugPrintf("    %s:\n", jt._key.c_str());
-									for (auto &kt : jt._value->_functionHandlers) {
-										debugPrintf("%s\n", g_lingo->formatFunctionBody(kt._value).c_str());
-									}
+				}
+				debugPrintf("  Factories:\n");
+				if (arch._value->factoryContexts.empty()) {
+					debugPrintf("    [empty]\n");
+				} else {
+					for (auto it : arch._value->factoryContexts) {
+						debugPrintf("  %d:\n", it._key);
+						if (it._value->empty()) {
+							debugPrintf("    [empty]\n");
+						} else {
+							for (auto jt : *it._value) {
+								debugPrintf("    %s:\n", jt._key.c_str());
+								for (auto &kt : jt._value->_functionHandlers) {
+									debugPrintf("%s\n", g_lingo->formatFunctionBody(kt._value).c_str());
 								}
 							}
 						}
 					}
-				} else {
-					debugPrintf("  [empty]\n");
 				}
 				debugPrintf("\n");
 			}
@@ -585,26 +581,20 @@ bool Debugger::cmdDisasm(int argc, const char **argv) {
 		}
 
 		Common::String funcName = target.substr(splitPoint + 1, Common::String::npos);
-		Movie *movie = g_director->getCurrentMovie();
-		Cast *targets[2] = {movie->getCast(), movie->getSharedCast()};
-
-		for (int i = 0; i < 2; i++) {
-			Cast *cast = targets[i];
-			if (cast && cast->_lingoArchive) {
-				ScriptContext *ctx = cast->_lingoArchive->findScriptContext(scriptId);
-				if (ctx && ctx->_functionHandlers.contains(funcName)) {
-					debugPrintf("%s\n", lingo->formatFunctionBody(ctx->_functionHandlers[funcName]).c_str());
-					return true;
-				}
-				if (cast->_lingoArchive->factoryContexts.contains(scriptId)) {
-					for (auto &it : *cast->_lingoArchive->factoryContexts.getVal(scriptId)) {
-						Common::String prefix = Common::String::format("%s:", it._key.c_str());
-						if (funcName.hasPrefixIgnoreCase(prefix)) {
-							Common::String handler = funcName.substr(prefix.size());
-							if (it._value->_functionHandlers.contains(handler)) {
-								debugPrintf("%s\n", lingo->formatFunctionBody(it._value->_functionHandlers[handler]).c_str());
-								return true;
-							}
+		for (auto jt : lingoArchs) {
+			ScriptContext *ctx = jt._value->findScriptContext(scriptId);
+			if (ctx && ctx->_functionHandlers.contains(funcName)) {
+				debugPrintf("%s\n", lingo->formatFunctionBody(ctx->_functionHandlers[funcName]).c_str());
+				return true;
+			}
+			if (jt._value->factoryContexts.contains(scriptId)) {
+				for (auto &it : *jt._value->factoryContexts.getVal(scriptId)) {
+					Common::String prefix = Common::String::format("%s:", it._key.c_str());
+					if (funcName.hasPrefixIgnoreCase(prefix)) {
+						Common::String handler = funcName.substr(prefix.size());
+						if (it._value->_functionHandlers.contains(handler)) {
+							debugPrintf("%s\n", lingo->formatFunctionBody(it._value->_functionHandlers[handler]).c_str());
+							return true;
 						}
 					}
 				}

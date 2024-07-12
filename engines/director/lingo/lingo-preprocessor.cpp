@@ -69,9 +69,9 @@ Common::U32String LingoCompiler::codePreprocessor(const Common::U32String &code,
 	const Common::u32char_type_t *s = code.c_str();
 	Common::U32String res;
 	if (debugChannelSet(2, kDebugPreprocess)) {
-		Common::String movie = g_director->getCurrentPath();
+		Common::String movie;
 		if (archive)
-			movie += archive->cast->getMacName();
+			movie += archive->moviePath.toString();
 		debugC(2, kDebugPreprocess, "LingoCompiler::codePreprocessor: \"%s\", %s, %d, %d", movie.c_str(),  scriptType2str(type), id.member, id.castLib);
 	}
 

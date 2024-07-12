@@ -382,7 +382,7 @@ Datum Lingo::getTheEntity(int entity, Datum &id, int field) {
 
 	g_debugger->entityReadHook(entity, field);
 
-	LingoArchive *mainArchive = movie->getMainLingoArch();
+	LingoArchive *mainArchive = movie->getLingoArch(DEFAULT_CAST_LIB);
 	Score *score = movie->getScore();
 
 	switch (entity) {
@@ -1069,7 +1069,7 @@ void Lingo::setTheEntity(int entity, Datum &id, int field, Datum &d) {
 			break;
 		case kTheScript:
 		{
-			LingoArchive *mainArchive = movie->getMainLingoArch();
+			LingoArchive *mainArchive = movie->getLingoArch(DEFAULT_CAST_LIB);
 			int commandId = 100;
 			while (mainArchive->getScriptContext(kEventScript, commandId))
 				commandId++;
@@ -1262,7 +1262,7 @@ int Lingo::getCastlibsNum() {
 int Lingo::getMembersNum() {
 	// FIXME: deal with D5 castlibs
 	Movie *movie = _vm->getCurrentMovie();
-	return (MAX(movie->getCast()->getCastMaxID(), (movie->_sharedCast ? movie->_sharedCast->getCastMaxID() : 0)));
+	return (MAX(movie->getCast()->getCastMaxID(), (movie->getSharedCast() ? movie->getSharedCast()->getCastMaxID() : 0)));
 }
 
 int Lingo::getXtrasNum() {

@@ -153,7 +153,7 @@ public:
 
 	bool step();
 	bool loadNextMovie();
-	void loadNewSharedCast(Cast *previousSharedCast);
+	void loadNewSharedCast(Cast *previousSharedCast, Common::SharedPtr<LingoArchive> &previousSharedLingoArch);
 
 	Common::Path getSharedCastPath();
 

@@ -246,6 +246,13 @@ void Lingo::reloadBuiltIns() {
 	reloadOpenXLibs();
 }
 
+
+LingoCollection::~LingoCollection() {
+	for (auto &it : archives) {
+		delete it._value;
+	}
+}
+
 LingoArchive::~LingoArchive() {
 	// First cleanup the ScriptContexts that are only in LctxContexts.
 	// LctxContexts has a huge overlap with scriptContexts.
@@ -304,7 +311,7 @@ Common::String LingoArchive::formatFunctionList(const char *prefix) {
 			result += Common::String::format("%s  [empty]\n", prefix);
 		for (auto &it : scriptContexts[i]) {
 			result += Common::String::format("%s  %d", prefix, it._key);
-			CastMemberInfo *cmi = cast->getCastMemberInfo(it._key);
+			CastMemberInfo *cmi = g_director->getCurrentMovie()->getCastMemberInfo(CastMemberID(it._key, castLib));
 			if (cmi && !cmi->name.empty()) {
 				result += Common::String::format(" \"%s\"", cmi->name.c_str());
 			}
@@ -349,15 +356,16 @@ Symbol Lingo::getHandler(const Common::String &name) {
 
 
 void LingoArchive::patchCode(const Common::U32String &code, ScriptType type, uint16 id, const char *scriptName, uint32 preprocFlags) {
-	debugC(1, kDebugCompile, "Patching code for type %s(%d) with id %d in '%s%s'\n"
-			"***********\n%s\n\n***********", scriptType2str(type), type, id, utf8ToPrintable(g_director->getCurrentPath()).c_str(), utf8ToPrintable(cast->getMacName()).c_str(), formatStringForDump(code.encode()).c_str());
+	CastMemberID member(id, castLib);
+	debugC(1, kDebugCompile, "Patching code for type %s(%d) with id %s\n"
+			"***********\n%s\n\n***********", scriptType2str(type), type, member.asString().c_str(), formatStringForDump(code.encode()).c_str());
 	if (!getScriptContext(type, id)) {
 		// If there's no existing script context, don't try and patch it.
 		warning("Script not defined for type %d, id %d", type, id);
 		return;
 	}
 
-	ScriptContext *sc = g_lingo->_compiler->compileLingo(code, nullptr, type, CastMemberID(id, cast->_castLibID), scriptName, false, preprocFlags);
+	ScriptContext *sc = g_lingo->_compiler->compileLingo(code, nullptr, type, member, scriptName, false, preprocFlags);
 
 	if (sc) {
 		for (auto &it : sc->_functionHandlers) {
@@ -375,8 +383,9 @@ void LingoArchive::patchCode(const Common::U32String &code, ScriptType type, uin
 
 
 void LingoArchive::addCode(const Common::U32String &code, ScriptType type, uint16 id, const char *scriptName, uint32 preprocFlags) {
-	debugC(1, kDebugCompile, "Add code for type %s(%d) with id %d in '%s%s'\n"
-			"***********\n%s\n\n***********", scriptType2str(type), type, id, utf8ToPrintable(g_director->getCurrentPath()).c_str(), utf8ToPrintable(cast->getMacName()).c_str(), formatStringForDump(code.encode()).c_str());
+	CastMemberID member(id, castLib);
+	debugC(1, kDebugCompile, "Add code for type %s(%d) with id %s\n"
+			"***********\n%s\n\n***********", scriptType2str(type), type, member.asString().c_str(), utf8ToPrintable(g_director->getCurrentPath()).c_str());
 
 	if (getScriptContext(type, id)) {
 		// Replace the pre-existing context but warn about it.
@@ -392,7 +401,7 @@ void LingoArchive::addCode(const Common::U32String &code, ScriptType type, uint1
 	else
 		contextName = Common::String::format("%d", id);
 
-	ScriptContext *sc = g_lingo->_compiler->compileLingo(code, this, type, CastMemberID(id, cast->_castLibID), contextName, false, preprocFlags);
+	ScriptContext *sc = g_lingo->_compiler->compileLingo(code, this, type, member, contextName, false, preprocFlags);
 	if (sc) {
 		scriptContexts[type][id] = sc;
 		sc->incRefCount();
@@ -1460,7 +1469,7 @@ void Lingo::runTests() {
 	SearchMan.listMatchingMembers(fsList, "*.lingo");
 	Common::Array<Common::Path> fileList;
 
-	LingoArchive *mainArchive = g_director->getCurrentMovie()->getMainLingoArch();
+	LingoArchive *mainArchive = g_director->getCurrentMovie()->getLingoArch(DEFAULT_CAST_LIB);
 
 	Common::Path startMovie = Common::Path(_vm->getStartMovie().startMovie, g_director->_dirSeparator);
 	if (!startMovie.empty()) {

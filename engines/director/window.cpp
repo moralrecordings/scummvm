@@ -398,7 +398,7 @@ void Window::updateBorderType() {
 	}
 }
 
-void Window::loadNewSharedCast(Cast *previousSharedCast) {
+void Window::loadNewSharedCast(Cast *previousSharedCast, Common::SharedPtr<LingoArchive> &previousSharedLingoArch) {
 	Common::Path previousSharedCastPath;
 	Common::Path newSharedCastPath = getSharedCastPath();
 	if (previousSharedCast && previousSharedCast->getArchive()) {
@@ -409,8 +409,10 @@ void Window::loadNewSharedCast(Cast *previousSharedCast) {
 	if (!previousSharedCastPath.empty() && previousSharedCastPath == newSharedCastPath) {
 		// Clear those previous widget pointers
 		previousSharedCast->releaseCastMemberWidget();
-		_currentMovie->_sharedCast = previousSharedCast;
-
+		// move the shared cast into the movie
+		// FIXME: we might need something like this, except for -all- the external casts
+		_currentMovie->setSharedCast(previousSharedCast);
+		_currentMovie->getLingoColl()->sharedArchive = previousSharedLingoArch;
 		debugC(1, kDebugLoading, "Skipping loading already loaded shared cast, path: %s", previousSharedCastPath.toString(Common::Path::kNativeSeparator).c_str());
 		return;
 	}
@@ -439,9 +441,11 @@ bool Window::loadNextMovie() {
 	_currentPath = Common::firstPathComponents(_nextMovie.movie, g_director->_dirSeparator);
 
 	Cast *previousSharedCast = nullptr;
+	Common::SharedPtr<LingoArchive> previousSharedLingoArch;
 	if (_currentMovie) {
 		previousSharedCast = _currentMovie->getSharedCast();
-		_currentMovie->_sharedCast = nullptr;
+		previousSharedLingoArch = _currentMovie->getLingoColl()->sharedArchive;
+		_currentMovie->setSharedCast(nullptr);
 	}
 
 	delete _currentMovie;
@@ -491,7 +495,7 @@ bool Window::loadNextMovie() {
 	debug(0, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 
 	g_director->setCurrentWindow(this);
-	loadNewSharedCast(previousSharedCast);
+	loadNewSharedCast(previousSharedCast, previousSharedLingoArch);
 
 	return true;
 }

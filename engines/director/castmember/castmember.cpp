@@ -241,7 +241,7 @@ bool CastMember::setField(int field, const Datum &d) {
 			warning("CastMember::setField(): CastMember info for %d not found", _castId);
 			return false;
 		}
-		_cast->_lingoArchive->replaceCode(*d.u.s, kCastScript, _castId);
+		_cast->getLingoArchive()->replaceCode(*d.u.s, kCastScript, _castId);
 		castInfo->script = d.asString();
 		return true;
 	case kTheWidth:

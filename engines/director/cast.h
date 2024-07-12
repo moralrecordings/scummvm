@@ -84,7 +84,7 @@ struct TilePatternEntry {
 
 class Cast {
 public:
-	Cast(Movie *movie, uint16 castLibID, bool isShared = false, bool isExternal = false);
+	Cast(Movie *movie, LingoArchive *lingoArch, uint16 castLibID, bool isShared = false, bool isExternal = false);
 	~Cast();
 
 	void loadArchive();
@@ -119,6 +119,7 @@ public:
 	Common::String getVideoPath(int castId);
 	Common::SeekableReadStreamEndian *getResource(uint32 tag, uint16 id);
 	void rebuildCastNameCache();
+	LingoArchive *getLingoArchive() { return _lingoArchive; };
 
 	// release all castmember's widget, should be called when we are changing movie.
 	// because widget is handled by channel, thus we should clear all of those run-time info when we are switching the movie. (because we will create new widgets for cast)
@@ -169,7 +170,6 @@ public:
 	int16 _frameRate;
 	TilePatternEntry _tiles[kNumBuiltinTiles];
 
-	LingoArchive *_lingoArchive;
 
 	LingoDec::ScriptContext *_lingodec = nullptr;
 	LingoDec::ChunkResolver *_chunkResolver = nullptr;
@@ -178,6 +178,7 @@ private:
 	DirectorEngine *_vm;
 	Lingo *_lingo;
 	Movie *_movie;
+	LingoArchive *_lingoArchive;
 
 	bool _isShared;
 	bool _loadMutex;

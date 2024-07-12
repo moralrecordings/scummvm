@@ -293,12 +293,28 @@ struct LingoEvent {
 	}
 };
 
+struct LingoCollection {
+	~LingoCollection();
+
+	// LingoArchives for each cast library. This struct has ownership.
+	Common::HashMap<int, LingoArchive *> archives;
+
+	// For the shared cast, Window will try and persist it over a movie
+	// swap if it remains the same. Which means we need this to exist in
+	// two places at once, which means we need a sharedptr.
+
+	// FIXME: we probably need to treat multicast the same way; persisting
+	// the same archives if they are reused by different movies.
+
+	Common::SharedPtr<LingoArchive> sharedArchive = nullptr;
+};
 
 struct LingoArchive {
-	LingoArchive(Cast *c) : cast(c) {};
 	~LingoArchive();
 
-	Cast *cast;
+	int castLib = DEFAULT_CAST_LIB;
+	Common::Path moviePath;	// used for patcher checks
+
 	ScriptContextHash lctxContexts;
 	ScriptContextHash scriptContexts[kMaxScriptType + 1];
 	FactoryContextHash factoryContexts;
@@ -315,7 +331,7 @@ struct LingoArchive {
 	void patchCode(const Common::U32String &code, ScriptType type, uint16 id, const char *scriptName = nullptr, uint32 preprocFlags = kLPPNone);
 	void removeCode(ScriptType type, uint16 id);
 	void replaceCode(const Common::U32String &code, ScriptType type, uint16 id, const char *scriptName = nullptr);
-	void addCodeV4(Common::SeekableReadStreamEndian &stream, uint16 lctxIndex, const Common::String &archName, uint16 version);
+	void addCodeV4(Common::SeekableReadStreamEndian &stream, uint16 lctxIndex, const Common::String &archName, uint16 version, Cast *cast);
 	void addNamesV4(Common::SeekableReadStreamEndian &stream);
 
 	// lingo-patcher.cpp

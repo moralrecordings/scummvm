@@ -42,87 +42,87 @@ struct ScriptPatch {
 	const char *replace;
 } const scriptPatches[] = {
 	// Garbage at end of script
-	{"warlock", nullptr, kPlatformMacintosh, "WARLOCKSHIP:UpForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
-			2, "SS Warlock:DATA:WARLOCKSHIP:Up.GCGunner", ""},
-	{"warlock", nullptr, kPlatformMacintosh, "WARLOCKSHIP:UpForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "WARLOCKSHIP/UpForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
+			2, "SS Warlock/DATA/WARLOCKSHIP/Up.GCGunner", ""},
+	{"warlock", nullptr, kPlatformMacintosh, "WARLOCKSHIP/UpForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
 			3, "Channels 17 to 18", ""},
-	{"warlock", nullptr, kPlatformMacintosh, "WARLOCKSHIP:UpForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "WARLOCKSHIP/UpForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
 			4, "Frames 150 to 160", ""},
 
 	// Garbage at end of script
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:HE.Aft", kScoreScript, 8, DEFAULT_CAST_LIB,
-			2, "SS Warlock:DATA:WARLOCKSHIP:HangStairsFore", ""},
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:HE.Aft", kScoreScript, 8, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/HE.Aft", kScoreScript, 8, DEFAULT_CAST_LIB,
+			2, "SS Warlock/DATA/WARLOCKSHIP/HangStairsFore", ""},
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/HE.Aft", kScoreScript, 8, DEFAULT_CAST_LIB,
 			3, "Channels 4 to 5", ""},
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:HE.Aft", kScoreScript, 8, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/HE.Aft", kScoreScript, 8, DEFAULT_CAST_LIB,
 			4, "Frames 20 to 20", ""},
 
 	// Garbage at end of script
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:ENG:D10", kScoreScript, 8, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/ENG/D10", kScoreScript, 8, DEFAULT_CAST_LIB,
 			2, "SS Warlock:ENG.Fold:C9", ""},
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:ENG:D10", kScoreScript, 8, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/ENG/D10", kScoreScript, 8, DEFAULT_CAST_LIB,
 			3, "Channels 19 to 20", ""},
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:ENG:D10", kScoreScript, 8, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/ENG/D10", kScoreScript, 8, DEFAULT_CAST_LIB,
 			4, "Frames 165 to 180", ""},
 
 	// Garbage at end of script
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:Up.c2", kScoreScript, 10, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/Up.c2", kScoreScript, 10, DEFAULT_CAST_LIB,
 			2, "Frames 150 to 160", ""},
 
 	// Garbage at end of script
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:Up.ForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/Up.ForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
 			2, "SS Warlock:DATA:WARLOCKSHIP:Up.GCGunner", ""},
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:Up.ForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/Up.ForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
 			3, "Channels 17 to 18", ""},
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:Up.ForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/Up.ForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
 			4, "Frames 150 to 160", ""},
 
 	// Garbage at end of script
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:Up.B2", kScoreScript, 9, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/Up.B2", kScoreScript, 9, DEFAULT_CAST_LIB,
 			2, "SS Warlock:DATA:WARLOCKSHIP:Up.GCGunner", ""},
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:Up.B2", kScoreScript, 9, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/Up.B2", kScoreScript, 9, DEFAULT_CAST_LIB,
 			3, "Channels 17 to 18", ""},
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:Up.B2", kScoreScript, 9, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/Up.B2", kScoreScript, 9, DEFAULT_CAST_LIB,
 			4, "Frames 150 to 160", ""},
 
 	// Garbage at end of script
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:BELSHAZZAR:STELLA:ORIGIN", kScoreScript, 12, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/BELSHAZZAR/STELLA/ORIGIN", kScoreScript, 12, DEFAULT_CAST_LIB,
 			2, "Frames 1 to 1", ""},
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:BELSHAZZAR:STELLA:ORIGIN", kScoreScript, 13, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/BELSHAZZAR/STELLA/ORIGIN", kScoreScript, 13, DEFAULT_CAST_LIB,
 			2, "Frames 1 to 1", ""},
 
 	// Garbage at end of script
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:HangHallAft", kScoreScript, 7, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/HangHallAft", kScoreScript, 7, DEFAULT_CAST_LIB,
 			2, "SS Warlock:DATA:WARLOCKSHIP:HangStairsFore", ""},
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:HangHallAft", kScoreScript, 7, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/HangHallAft", kScoreScript, 7, DEFAULT_CAST_LIB,
 			3, "Channels 4 to 5", ""},
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:WARLOCKSHIP:HangHallAft", kScoreScript, 7, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/WARLOCKSHIP/HangHallAft", kScoreScript, 7, DEFAULT_CAST_LIB,
 			4, "Frames 20 to 20", ""},
 
 	// Stray 'then' (obvious copy/paste error)
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:K:KT:OutMarauderKT", kMovieScript, 14, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/K/KT/OutMarauderKT", kMovieScript, 14, DEFAULT_CAST_LIB,
 			23, "set Spacesuit = 0 then", "set Spacesuit = 0"},
 
 	// Missing '&'
-	{"warlock", nullptr, kPlatformMacintosh, "DATA:NAV:Shared Cast", kMovieScript, 510, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformMacintosh, "DATA/NAV/Shared Cast", kMovieScript, 510, DEFAULT_CAST_LIB,
 			19, "alert \"Failed Save.\" & return & \"Error message number: \" string ( filer )",
 				"alert \"Failed Save.\" & return & \"Error message number: \" & string ( filer )"},
 
 	// Garbage at end of script
-	{"warlock", "v1.1.3 MPC", kPlatformWindows, "WRLCKSHP:UpForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
+	{"warlock", "v1.1.3 MPC", kPlatformWindows, "WRLCKSHP/UpForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
 			2, "SS Warlock:DATA:WARLOCKSHIP:Up.GCGunner", ""},
-	{"warlock", "v1.1.3 MPC", kPlatformWindows, "WRLCKSHP:UpForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
+	{"warlock", "v1.1.3 MPC", kPlatformWindows, "WRLCKSHP/UpForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
 			3, "Channels 17 to 18", ""},
-	{"warlock", "v1.1.3 MPC", kPlatformWindows, "WRLCKSHP:UpForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
+	{"warlock", "v1.1.3 MPC", kPlatformWindows, "WRLCKSHP/UpForeECall", kScoreScript, 12, DEFAULT_CAST_LIB,
 			4, "Frames 150 to 160", ""},
 
 	// Missing '&'
-	{"warlock", nullptr, kPlatformUnknown, "NAV:Shared Cast", kMovieScript, 510, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformUnknown, "NAV/Shared Cast", kMovieScript, 510, DEFAULT_CAST_LIB,
 			23, "alert \"Failed Save.\" & return & \"Error message number: \" string ( filer )",
 				"alert \"Failed Save.\" & return & \"Error message number: \" & string ( filer )"},
 
 	// Non-existent menu cast reference
-	{"warlock", nullptr, kPlatformWindows, "STARBIRD:ABOUT", kScoreScript, 4, DEFAULT_CAST_LIB,
+	{"warlock", nullptr, kPlatformWindows, "STARBIRD/ABOUT", kScoreScript, 4, DEFAULT_CAST_LIB,
 			1, "installmenu A13", ""},
 
 	// Typo
@@ -130,45 +130,45 @@ struct ScriptPatch {
 			7, "if the soundLevel <> 7 then set the the soundLevel to 7", "if the soundLevel <> 7 then set the soundLevel to 7"},
 
 	// Patching dead loop which was fixed in v2
-	{"lzone", "", kPlatformMacintosh, "DATA:R-A:Ami-00", kScoreScript, 3, DEFAULT_CAST_LIB,
+	{"lzone", "", kPlatformMacintosh, "DATA/R-A/Ami-00", kScoreScript, 3, DEFAULT_CAST_LIB,
 			2, "continue", "go \"OUT\""},
 
 	// Garbage at end of statements
-	{"lzone", "", kPlatformMacintosh, "DATA:R-E:ZD2-LAS", kScoreScript, 7, DEFAULT_CAST_LIB,
+	{"lzone", "", kPlatformMacintosh, "DATA/R-E/ZD2-LAS", kScoreScript, 7, DEFAULT_CAST_LIB,
 			4, "go to the frame 0", "go to the frame"},
-	{"lzone", "", kPlatformMacintosh, "DATA:R-E:zd1-con1", kScoreScript, 27, DEFAULT_CAST_LIB,
+	{"lzone", "", kPlatformMacintosh, "DATA/R-E/zd1-con1", kScoreScript, 27, DEFAULT_CAST_LIB,
 			1, "go to the frame 0", "go to the frame"},
-	{"lzone", "", kPlatformMacintosh, "DATA:R-E:zd1-con1", kScoreScript, 30, DEFAULT_CAST_LIB,
+	{"lzone", "", kPlatformMacintosh, "DATA/R-E/zd1-con1", kScoreScript, 30, DEFAULT_CAST_LIB,
 			4, "go the frame 0", "go to the frame"},
-	{"lzone", "", kPlatformMacintosh, "DATA:R-G:st-c", kScoreScript, 14, DEFAULT_CAST_LIB,
+	{"lzone", "", kPlatformMacintosh, "DATA/R-G/st-c", kScoreScript, 14, DEFAULT_CAST_LIB,
 			1, "go to the frame 0", "go to the frame"},
-	{"lzone", "", kPlatformMacintosh, "DATA:R-G:st-d.mo", kScoreScript, 4, DEFAULT_CAST_LIB,
+	{"lzone", "", kPlatformMacintosh, "DATA/R-G/st-d.mo", kScoreScript, 4, DEFAULT_CAST_LIB,
 			1, "go to the frame 0", "go to the frame"},
-	{"lzone", "", kPlatformMacintosh, "DATA:R-F:ARCH-U.D-1", kScoreScript, 8, DEFAULT_CAST_LIB,
+	{"lzone", "", kPlatformMacintosh, "DATA/R-F/ARCH-U.D-1", kScoreScript, 8, DEFAULT_CAST_LIB,
 			1, "GO \"SPACE\" OF MOVIE \"L-ZONE:DATA:R-G:ST-A2\",\"242,197\"",
 			   "GO \"SPACE\" OF MOVIE \"L-ZONE:DATA:R-G:ST-A2\""},
 
 
-	{"lingoexpo", "", kPlatformMacintosh, "Lingo Expo:Navigator", kMovieScript, 9, DEFAULT_CAST_LIB,
+	{"lingoexpo", "", kPlatformMacintosh, "Lingo Expo/Navigator", kMovieScript, 9, DEFAULT_CAST_LIB,
 			97, "  append(codeExampleList,\"6,301,302,303,304,305,306\")  - KIOSK SCRIPTS",
 				"  append(codeExampleList,\"6,301,302,303,304,305,306\")"},
 
 
-	{"jman", "", kPlatformWindows, "mmm:Mars Space Game 05", kMovieScript, 10, DEFAULT_CAST_LIB,
+	{"jman", "", kPlatformWindows, "mmm/Mars Space Game 05", kMovieScript, 10, DEFAULT_CAST_LIB,
 			68, "set DamageParameter = (gProcessorSpeed/2) + 7)",
 				"set DamageParameter = (gProcessorSpeed/2) + 7"},
 
-	{"jman", "", kPlatformWindows, "MMM:Shared Cast B&W", kMovieScript, 323, DEFAULT_CAST_LIB,
+	{"jman", "", kPlatformWindows, "MMM/Shared Cast B&W", kMovieScript, 323, DEFAULT_CAST_LIB,
 			187, "set the trails of sprite 19 to 0", "set the locH of sprite 19 to 408"},
-	{"jman", "", kPlatformWindows, "MMM:Shared Cast B&W", kMovieScript, 323, DEFAULT_CAST_LIB,
+	{"jman", "", kPlatformWindows, "MMM/Shared Cast B&W", kMovieScript, 323, DEFAULT_CAST_LIB,
 			188, "set the locH of sprite 19 to 408", "set the locV of sprite 19 to 168"},
-	{"jman", "", kPlatformWindows, "MMM:Shared Cast B&W", kMovieScript, 323, DEFAULT_CAST_LIB,
+	{"jman", "", kPlatformWindows, "MMM/Shared Cast B&W", kMovieScript, 323, DEFAULT_CAST_LIB,
 			189, "set the locV of sprite 19 to 168", "set the text of field \"Description\" = description"},
-	{"jman", "", kPlatformWindows, "MMM:Shared Cast B&W", kMovieScript, 323, DEFAULT_CAST_LIB,
+	{"jman", "", kPlatformWindows, "MMM/Shared Cast B&W", kMovieScript, 323, DEFAULT_CAST_LIB,
 			190, "set the text of field \"Description\" = description", "set the castnum of sprite 19 to the number of cast \"Description\""},
-	{"jman", "", kPlatformWindows, "MMM:Shared Cast B&W", kMovieScript, 323, DEFAULT_CAST_LIB,
+	{"jman", "", kPlatformWindows, "MMM/Shared Cast B&W", kMovieScript, 323, DEFAULT_CAST_LIB,
 			191, "set the castnum of sprite 19 to the number of cast \"Description\"", "updateStage"},
-	{"jman", "", kPlatformWindows, "MMM:Shared Cast B&W", kMovieScript, 323, DEFAULT_CAST_LIB,
+	{"jman", "", kPlatformWindows, "MMM/Shared Cast B&W", kMovieScript, 323, DEFAULT_CAST_LIB,
 			192, "updateStage", "set the trails of sprite 19 to 0"},
 
 
@@ -214,7 +214,7 @@ struct ScriptPatch {
 	// Hack to fix the undefined sprite collision behaviour relied on by the boar hunt
 	{"wrath", "", kPlatformWindows, "57AM1", kMovieScript, 1, DEFAULT_CAST_LIB,
 			385, "(StartV57a-6) <=  YesV57a", "    if sprite 5 intersects 3 and StartV57a <=  YesV57a + 16 then"},
-	{"wrath", "", kPlatformMacintosh, "Wrath:57AM1", kMovieScript, 1, DEFAULT_CAST_LIB,
+	{"wrath", "", kPlatformMacintosh, "Wrath/57AM1", kMovieScript, 1, DEFAULT_CAST_LIB,
 			382, "(StartV57a-6) <=  YesV57a", "    if sprite 5 intersects 3 and StartV57a <=  YesV57a + 16 then"},
 
 
@@ -243,7 +243,7 @@ struct ScriptPatch {
 
 
 	// garbage script
-	{"refixion2", "", kPlatformMacintosh, "data:Movie:ROgo", kScoreScript, 3, DEFAULT_CAST_LIB,
+	{"refixion2", "", kPlatformMacintosh, "data/Movie/ROgo", kScoreScript, 3, DEFAULT_CAST_LIB,
 			1, "Are you sure to cut off  KANJI Talk", ""},
 
 
@@ -380,28 +380,28 @@ struct ScriptHandlerPatch {
 	uint16 castLib;
 	const char **handlerBody;
 } const scriptHandlerPatches[] = {
-	{"kyoto", nullptr, kPlatformWindows, "ck_data\\dd_dairi\\shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
-	{"kyoto", nullptr, kPlatformWindows, "ck_data\\findfldr\\shared.dxr", kMovieScript, 802, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
-	{"kyoto", nullptr, kPlatformWindows, "ck_data\\ichi\\shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
-	{"kyoto", nullptr, kPlatformWindows, "ck_data\\jigoku\\shared.dxr", kMovieScript, 840, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
-	{"kyoto", nullptr, kPlatformWindows, "ck_data\\kusamura\\shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
-	{"kyoto", nullptr, kPlatformWindows, "ck_data\\map01\\shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
-	{"kyoto", nullptr, kPlatformWindows, "ck_data\\map02\\shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
-	{"kyoto", nullptr, kPlatformWindows, "ck_data\\map03\\shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
-	{"kyoto", nullptr, kPlatformWindows, "ck_data\\map04\\shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
-	{"kyoto", nullptr, kPlatformWindows, "ck_data\\opening\\shared.dxr", kMovieScript, 802, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
-	{"kyoto", nullptr, kPlatformWindows, "ck_data\\rajoumon\\shared.dxr", kMovieScript, 840, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
-	{"kyoto", nullptr, kPlatformWindows, "ck_data\\rokudou\\shared.dxr", kMovieScript, 846, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
-	{"vnc", nullptr, kPlatformWindows, "VNC\\VNC.EXE", kMovieScript, 57, DEFAULT_CAST_LIB, &vncSkipDetection},
-	{"vnc", nullptr, kPlatformWindows, "VNC2\\SHARED.DXR", kMovieScript, 1248, DEFAULT_CAST_LIB, &vncEnableCheats},
-	{"amber", nullptr, kPlatformWindows, "AMBER_F\\AMBER_JB.EXE", kMovieScript, 7, DEFAULT_CAST_LIB, &amberDriveDetectionFix},
+	{"kyoto", nullptr, kPlatformWindows, "ck_data/dd_dairi/shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
+	{"kyoto", nullptr, kPlatformWindows, "ck_data/findfldr/shared.dxr", kMovieScript, 802, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
+	{"kyoto", nullptr, kPlatformWindows, "ck_data/ichi/shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
+	{"kyoto", nullptr, kPlatformWindows, "ck_data/jigoku/shared.dxr", kMovieScript, 840, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
+	{"kyoto", nullptr, kPlatformWindows, "ck_data/kusamura/shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
+	{"kyoto", nullptr, kPlatformWindows, "ck_data/map01/shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
+	{"kyoto", nullptr, kPlatformWindows, "ck_data/map02/shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
+	{"kyoto", nullptr, kPlatformWindows, "ck_data/map03/shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
+	{"kyoto", nullptr, kPlatformWindows, "ck_data/map04/shared.dxr", kMovieScript, 906, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
+	{"kyoto", nullptr, kPlatformWindows, "ck_data/opening/shared.dxr", kMovieScript, 802, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
+	{"kyoto", nullptr, kPlatformWindows, "ck_data/rajoumon/shared.dxr", kMovieScript, 840, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
+	{"kyoto", nullptr, kPlatformWindows, "ck_data/rokudou/shared.dxr", kMovieScript, 846, DEFAULT_CAST_LIB, &kyotoTextEntryFix},
+	{"vnc", nullptr, kPlatformWindows, "VNC/VNC.EXE", kMovieScript, 57, DEFAULT_CAST_LIB, &vncSkipDetection},
+	{"vnc", nullptr, kPlatformWindows, "VNC2/SHARED.DXR", kMovieScript, 1248, DEFAULT_CAST_LIB, &vncEnableCheats},
+	{"amber", nullptr, kPlatformWindows, "AMBER_F/AMBER_JB.EXE", kMovieScript, 7, DEFAULT_CAST_LIB, &amberDriveDetectionFix},
 	{nullptr, nullptr, kPlatformUnknown, nullptr, kNoneScript, 0, 0, nullptr},
 
 };
 
 void LingoArchive::patchScriptHandler(ScriptType type, CastMemberID id) {
 	const ScriptHandlerPatch *patch = scriptHandlerPatches;
-	Common::String movie = g_director->getCurrentPath() + cast->getMacName();
+	Common::String movie = moviePath.toString();
 
 	// So far, we have not many patches, so do linear lookup
 	while (patch->gameId) {
@@ -430,7 +430,7 @@ Common::U32String LingoCompiler::patchLingoCode(const Common::U32String &line, L
 		return line;
 
 	const ScriptPatch *patch = scriptPatches;
-	Common::String movie = g_director->getCurrentPath() + archive->cast->getMacName();
+	Common::String movie = archive->moviePath.toString();
 
 	// So far, we have not many patches, so do linear lookup
 	while (patch->gameId) {

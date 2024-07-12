@@ -54,10 +54,10 @@ bool toggleButton(const char *label, bool *p_value, bool inverse) {
 	return result;
 }
 
-const LingoDec::Handler *getHandler(const Cast *cast, CastMemberID id, const Common::String &handlerId) {
+const LingoDec::Handler *getHandler(Cast *cast, CastMemberID id, const Common::String &handlerId) {
 	if (!cast)
 		return nullptr;
-	const ScriptContext *ctx = cast->_lingoArchive->findScriptContext(id.member);
+	const ScriptContext *ctx = cast->getLingoArchive()->findScriptContext(id.member);
 	if (!ctx || !ctx->_functionHandlers.contains(handlerId))
 		return nullptr;
 	// for the moment it's happening with Director version < 4
@@ -79,7 +79,7 @@ const LingoDec::Handler *getHandler(const Cast *cast, CastMemberID id, const Com
 const LingoDec::Handler *getHandler(CastMemberID id, const Common::String &handlerId) {
 	const Director::Movie *movie = g_director->getCurrentMovie();
 	for (const auto it : *movie->getCasts()) {
-		const Cast *cast = it._value;
+		Cast *cast = it._value;
 		const LingoDec::Handler *handler = getHandler(cast, id, handlerId);
 		if (handler)
 			return handler;
@@ -97,7 +97,7 @@ ImGuiScript toImGuiScript(ScriptType scriptType, CastMemberID id, const Common::
 	if (!handler) {
 		const ScriptContext *ctx;
 		if (id.castLib == SHARED_CAST_LIB) {
-			ctx = g_director->getCurrentMovie()->getSharedCast()->_lingoArchive->getScriptContext(scriptType, id.member);
+			ctx = g_director->getCurrentMovie()->getSharedLingoArch()->getScriptContext(scriptType, id.member);
 		} else {
 			ctx = g_director->getCurrentMovie()->getScriptContext(scriptType, id);
 		}

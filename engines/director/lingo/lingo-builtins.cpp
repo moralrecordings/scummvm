@@ -2334,7 +2334,7 @@ void LB::b_installMenu(int nargs) {
 
 	debugC(3, kDebugLoading, "LB::b_installMenu(): installing menu - '%s'", Common::toPrintable(menuStxt).c_str());
 
-	LingoArchive *mainArchive = movie->getMainLingoArch();
+	LingoArchive *mainArchive = movie->getLingoArch(DEFAULT_CAST_LIB);
 
 	// STXT sections use Mac-style carriage returns for line breaks.
 	const char LINE_BREAK_CHAR = '\x0D';

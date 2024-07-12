@@ -124,8 +124,8 @@ static bool showScriptCast(CastMemberID &id) {
 		if (ctx) {
 			for (auto &handler : ctx->_functionHandlers)
 				renderCastScript(handler._value);
-		} else if (cast->_lingoArchive->factoryContexts.contains(id.member)) {
-			for (auto &it : *cast->_lingoArchive->factoryContexts.getVal(id.member)) {
+		} else if (cast->getLingoArchive()->factoryContexts.contains(id.member)) {
+			for (auto &it : *cast->getLingoArchive()->factoryContexts.getVal(id.member)) {
 				for (auto &handler : it._value->_functionHandlers)
 					renderCastScript(handler._value);
 			}
@@ -270,10 +270,10 @@ void showFuncList() {
 			Movie *movie = g_director->getCurrentMovie();
 			for (auto &cast : *movie->getCasts()) {
 				for (int i = 0; i <= kMaxScriptType; i++) {
-					if (cast._value->_lingoArchive->scriptContexts[i].empty())
+					if (cast._value->getLingoArchive()->scriptContexts[i].empty())
 						continue;
 					Common::String scriptType(scriptType2str((ScriptType)i));
-					for (auto &scriptContext : cast._value->_lingoArchive->scriptContexts[i]) {
+					for (auto &scriptContext : cast._value->getLingoArchive()->scriptContexts[i]) {
 						Common::String name = Common::String::format("%d", scriptContext._key);
 						CastMemberInfo *cmi = cast._value->getCastMemberInfo(scriptContext._key);
 						if (cmi && !cmi->name.empty()) {
@@ -306,12 +306,12 @@ void showFuncList() {
 			}
 
 			Cast *sharedCast = movie->getSharedCast();
-			if (sharedCast && sharedCast->_lingoArchive) {
+			if (sharedCast && sharedCast->getLingoArchive()) {
 				for (int i = 0; i <= kMaxScriptType; i++) {
-					if (sharedCast->_lingoArchive->scriptContexts[i].empty())
+					if (sharedCast->getLingoArchive()->scriptContexts[i].empty())
 						continue;
 					Common::String scriptType(scriptType2str((ScriptType)i));
-					for (auto &scriptContext : sharedCast->_lingoArchive->scriptContexts[i]) {
+					for (auto &scriptContext : sharedCast->getLingoArchive()->scriptContexts[i]) {
 						Common::String name = Common::String::format("%d", scriptContext._key);
 						CastMemberInfo *cmi = sharedCast->getCastMemberInfo(scriptContext._key);
 						if (cmi && !cmi->name.empty()) {

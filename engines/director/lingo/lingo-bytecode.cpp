@@ -21,7 +21,6 @@
 
 #include "common/config-manager.h"
 #include "common/file.h"
-#include "common/substream.h"
 
 #include "director/director.h"
 #include "director/cast.h"
@@ -970,7 +969,7 @@ void LC::cb_zeropush() {
 	g_lingo->push(d);
 }
 
-ScriptContext *LingoCompiler::compileLingoV4(Common::SeekableReadStreamEndian &stream, uint16 lctxIndex, LingoArchive *archive, const Common::String &archName, uint16 version) {
+ScriptContext *LingoCompiler::compileLingoV4(Common::SeekableReadStreamEndian &stream, uint16 lctxIndex, LingoArchive *archive, const Common::String &archName, uint16 version, Cast *cast) {
 	if (stream.size() < 0x5c) {
 		warning("Lscr header too small");
 		return nullptr;
@@ -1061,7 +1060,7 @@ ScriptContext *LingoCompiler::compileLingoV4(Common::SeekableReadStreamEndian &s
 	// initialise the script
 	ScriptType scriptType = kCastScript;
 	Common::String castName;
-	CastMember *member = archive->cast->getCastMemberByScriptId(scriptId);
+	CastMember *member = cast->getCastMemberByScriptId(scriptId);
 	if (member) {
 		if (member->_type == kCastLingoScript)
 			scriptType = ((ScriptCastMember *)member)->_scriptType;
@@ -1213,7 +1212,7 @@ ScriptContext *LingoCompiler::compileLingoV4(Common::SeekableReadStreamEndian &s
 					break;
 				}
 				constant.type = STRING;
-				constant.u.s = new Common::String(archive->cast->decodeString(str), Common::kUtf8);
+				constant.u.s = new Common::String(cast->decodeString(str), Common::kUtf8);
 			}
 			break;
 		case 4: // Integer type
@@ -1672,8 +1671,8 @@ ScriptContext *LingoCompiler::compileLingoV4(Common::SeekableReadStreamEndian &s
 	return sc;
 }
 
-void LingoArchive::addCodeV4(Common::SeekableReadStreamEndian &stream, uint16 lctxIndex, const Common::String &archName, uint16 version) {
-	ScriptContext *ctx = g_lingo->_compiler->compileLingoV4(stream, lctxIndex, this, archName, version);
+void LingoArchive::addCodeV4(Common::SeekableReadStreamEndian &stream, uint16 lctxIndex, const Common::String &archName, uint16 version, Cast *cast) {
+	ScriptContext *ctx = g_lingo->_compiler->compileLingoV4(stream, lctxIndex, this, archName, version, cast);
 	if (ctx) {
 		lctxContexts[lctxIndex] = ctx;
 		ctx->incRefCount();

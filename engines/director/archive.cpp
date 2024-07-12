@@ -54,7 +54,7 @@ bool Archive::openFile(const Common::Path &path) {
 		return false;
 	}
 
-	_pathName = path.toString(g_director->_dirSeparator);
+	_pathName = path;
 
 	if (!openStream(file)) {
 		warning("Archive::openFile(): Error loading stream from file %s", path.toString(Common::Path::kNativeSeparator).c_str());

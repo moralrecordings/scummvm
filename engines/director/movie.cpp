@@ -76,7 +76,9 @@ Movie::Movie(Window *window) {
 
 	_movieArchive = nullptr;
 
-	_cast = new Cast(this, DEFAULT_CAST_LIB);
+	_lingoColl = Common::SharedPtr<LingoCollection>(new LingoCollection);
+	_lingoColl->archives[DEFAULT_CAST_LIB] = new LingoArchive;
+	_cast = new Cast(this, _lingoColl->archives[DEFAULT_CAST_LIB], DEFAULT_CAST_LIB);
 	_casts.setVal(_cast->_castLibID, _cast);
 	_sharedCast = nullptr;
 	_score = new Score(this);
@@ -179,7 +181,8 @@ void Movie::loadCastLibMapping(Common::SeekableReadStreamEndian &stream) {
 		if (_casts.contains(libId)) {
 			cast = _casts.getVal(libId);
 		} else {
-			cast = new Cast(this, libId, false, isExternal);
+			_lingoColl->archives[libId] = new LingoArchive;
+			cast = new Cast(this, _lingoColl->archives[libId], libId, false, isExternal);
 			_casts.setVal(libId, cast);
 		}
 		_castNames[name] = libId;
@@ -336,7 +339,7 @@ void Movie::loadFileInfo(Common::SeekableReadStreamEndian &stream) {
 		_cast->dumpScript(_script.c_str(), kMovieScript, 0);
 
 	if (!_script.empty())
-		_cast->_lingoArchive->addCode(_script, kMovieScript, 0, nullptr, kLPPTrimGarbage);
+		_lingoColl->archives[DEFAULT_CAST_LIB]->addCode(_script, kMovieScript, 0, nullptr, kLPPTrimGarbage);
 
 	_changedBy = fileInfo.strings[1].readString();
 	_createdBy = fileInfo.strings[2].readString();
@@ -394,7 +397,8 @@ void Movie::loadSharedCastsFrom(Common::Path &filename) {
 	debug(0, "@@@@   Loading shared cast '%s' in '%s'", sharedCast->getFileName().c_str(), filename.getParent().toString().c_str());
 	debug(0, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 
-	_sharedCast = new Cast(this, DEFAULT_CAST_LIB, true, false);
+	_lingoColl->sharedArchive = Common::SharedPtr<LingoArchive>(new LingoArchive);
+	_sharedCast = new Cast(this, _lingoColl->sharedArchive.get(), DEFAULT_CAST_LIB, true, false);
 	_sharedCast->setArchive(sharedCast);
 	_sharedCast->loadArchive();
 }
@@ -595,20 +599,22 @@ const Stxt *Movie::getStxt(CastMemberID memberID) {
 	return result;
 }
 
-LingoArchive *Movie::getMainLingoArch() {
-	return _casts.getVal(DEFAULT_CAST_LIB)->_lingoArchive;
+LingoArchive *Movie::getLingoArch(int castLib) {
+	if (_lingoColl->archives.contains(castLib))
+		return _lingoColl->archives[castLib];
+	return nullptr;
 }
 
 LingoArchive *Movie::getSharedLingoArch() {
-	return _sharedCast ? _sharedCast->_lingoArchive : nullptr;
+	return _lingoColl->sharedArchive.get();
 }
 
 ScriptContext *Movie::getScriptContext(ScriptType type, CastMemberID id) {
 	ScriptContext *result = nullptr;
 	if (_casts.contains(id.castLib)) {
-		result = _casts.getVal(id.castLib)->_lingoArchive->getScriptContext(type, id.member);
+		result = _lingoColl->archives[id.castLib]->getScriptContext(type, id.member);
 		if (result == nullptr && _sharedCast) {
-			result = _sharedCast->_lingoArchive->getScriptContext(type, id.member);
+			result = _lingoColl->sharedArchive->getScriptContext(type, id.member);
 		}
 	} else if (!id.isNull()) {
 		warning("Movie::getScriptContext: Unknown castLib %d", id.castLib);
@@ -617,13 +623,13 @@ ScriptContext *Movie::getScriptContext(ScriptType type, CastMemberID id) {
 }
 
 Symbol Movie::getHandler(const Common::String &name) {
-	for (auto &it : _casts) {
-		if (it._value->_lingoArchive->functionHandlers.contains(name))
-			return it._value->_lingoArchive->functionHandlers[name];
+	for (auto &it : _lingoColl->archives) {
+		if (it._value->functionHandlers.contains(name))
+			return it._value->functionHandlers[name];
 	}
 
-	if (_sharedCast && _sharedCast->_lingoArchive->functionHandlers.contains(name))
-		return _sharedCast->_lingoArchive->functionHandlers[name];
+	if (_lingoColl->sharedArchive && _lingoColl->sharedArchive->functionHandlers.contains(name))
+		return _lingoColl->sharedArchive->functionHandlers[name];
 
 	return Symbol();
 }
