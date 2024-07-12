@@ -3402,13 +3402,13 @@ void LB::b_script(int nargs) {
 
 		if (cast->_type == kCastLingoScript) {
 			// script cast can be either a movie script, score script, or parent script (D5+)
-			script = g_director->getCurrentMovie()->getScriptContext(kMovieScript, memberID);
+			script = g_lingo->_state->coll->getScriptContext(kMovieScript, memberID);
 			if (!script)
-				script = g_director->getCurrentMovie()->getScriptContext(kScoreScript, memberID);
+				script = g_lingo->_state->coll->getScriptContext(kScoreScript, memberID);
 			if (!script)
-				script = g_director->getCurrentMovie()->getScriptContext(kParentScript, memberID);
+				script = g_lingo->_state->coll->getScriptContext(kParentScript, memberID);
 		} else {
-			script = g_director->getCurrentMovie()->getScriptContext(kCastScript, memberID);
+			script = g_lingo->_state->coll->getScriptContext(kCastScript, memberID);
 		}
 
 		if (script) {

@@ -166,7 +166,6 @@ LingoState::~LingoState() {
 	if (context) {
 		context->decRefCount();
 	}
-
 }
 
 Lingo::Lingo(DirectorEngine *vm) : _vm(vm) {
@@ -252,6 +251,32 @@ LingoCollection::~LingoCollection() {
 		delete it._value;
 	}
 }
+
+ScriptContext *LingoCollection::getScriptContext(ScriptType type, CastMemberID id) {
+	ScriptContext *result = nullptr;
+	if (archives.contains(id.castLib)) {
+		result = archives[id.castLib]->getScriptContext(type, id.member);
+		if (result == nullptr && sharedArchive) {
+			result = sharedArchive->getScriptContext(type, id.member);
+		}
+	} else if (!id.isNull()) {
+		warning("LingoCollection::getScriptContext: Unknown castLib %d", id.castLib);
+	}
+	return result;
+}
+
+Symbol LingoCollection::getHandler(const Common::String &name) {
+	for (auto &it : archives) {
+		if (it._value->functionHandlers.contains(name))
+			return it._value->functionHandlers[name];
+	}
+
+	if (sharedArchive && sharedArchive->functionHandlers.contains(name))
+		return sharedArchive->functionHandlers[name];
+
+	return Symbol();
+}
+
 
 LingoArchive::~LingoArchive() {
 	// First cleanup the ScriptContexts that are only in LctxContexts.
@@ -345,7 +370,8 @@ Symbol Lingo::getHandler(const Common::String &name) {
 	if (_state->context && _state->context->_functionHandlers.contains(name))
 		return _state->context->_functionHandlers[name];
 
-	sym = g_director->getCurrentMovie()->getHandler(name);
+	if (_state->coll)
+		sym = _state->coll->getHandler(name);
 	if (sym.type != VOIDSYM)
 		return sym;
 
@@ -740,6 +766,7 @@ void Lingo::executeScript(ScriptType type, CastMemberID id) {
 
 	debugC(1, kDebugLingoExec, "Executing script type: %s, id: %d, castLib %d", scriptType2str(type), id.member, id.castLib);
 
+	_state->coll = movie->getLingoColl();
 	Symbol sym = sc->_eventHandlers[kEventGeneric];
 	LC::call(sym, 0, false);
 	execute();
@@ -747,6 +774,7 @@ void Lingo::executeScript(ScriptType type, CastMemberID id) {
 
 void Lingo::executeHandler(const Common::String &name) {
 	debugC(1, kDebugLingoExec, "Executing script handler : %s", name.c_str());
+	_state->coll = _vm->getCurrentMovie()->getLingoColl();
 	Symbol sym = getHandler(name);
 	LC::call(sym, 0, false);
 	execute();
@@ -1533,6 +1561,7 @@ void Lingo::executePerFrameHook(int frame, int subframe) {
 		Symbol method = _perFrameHook.u.obj->getMethod("mAtFrame");
 		if (method.type != VOIDSYM) {
 			debugC(1, kDebugLingoExec, "Executing perFrameHook : <%s>(mAtFrame, %d, %d)", _perFrameHook.asString(true).c_str(), frame, subframe);
+			_state->coll = _vm->getCurrentMovie()->getLingoColl();
 			push(_perFrameHook);
 			push(frame);
 			push(subframe);
@@ -1547,6 +1576,7 @@ void Lingo::executePerFrameHook(int frame, int subframe) {
 				Datum actor = _actorList.u.farr->arr[i];
 				Symbol method = actor.u.obj->getMethod("stepFrame");
 				debugC(1, kDebugLingoExec, "Executing perFrameHook : <%s>, frame %d, subframe %d", actor.asString(true).c_str(), frame, subframe);
+				_state->coll = _vm->getCurrentMovie()->getLingoColl();
 				if (method.nargs == 1)
 					push(actor);
 				LC::call(method, method.nargs, false);

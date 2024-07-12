@@ -610,28 +610,7 @@ LingoArchive *Movie::getSharedLingoArch() {
 }
 
 ScriptContext *Movie::getScriptContext(ScriptType type, CastMemberID id) {
-	ScriptContext *result = nullptr;
-	if (_casts.contains(id.castLib)) {
-		result = _lingoColl->archives[id.castLib]->getScriptContext(type, id.member);
-		if (result == nullptr && _sharedCast) {
-			result = _lingoColl->sharedArchive->getScriptContext(type, id.member);
-		}
-	} else if (!id.isNull()) {
-		warning("Movie::getScriptContext: Unknown castLib %d", id.castLib);
-	}
-	return result;
-}
-
-Symbol Movie::getHandler(const Common::String &name) {
-	for (auto &it : _lingoColl->archives) {
-		if (it._value->functionHandlers.contains(name))
-			return it._value->functionHandlers[name];
-	}
-
-	if (_lingoColl->sharedArchive && _lingoColl->sharedArchive->functionHandlers.contains(name))
-		return _lingoColl->sharedArchive->functionHandlers[name];
-
-	return Symbol();
+	return _lingoColl->getScriptContext(type, id);
 }
 
 Common::String InfoEntry::readString(bool pascal) {

@@ -296,6 +296,9 @@ struct LingoEvent {
 struct LingoCollection {
 	~LingoCollection();
 
+	ScriptContext *getScriptContext(ScriptType type, CastMemberID id);
+	Symbol getHandler(const Common::String &name);
+
 	// LingoArchives for each cast library. This struct has ownership.
 	Common::HashMap<int, LingoArchive *> archives;
 
@@ -344,6 +347,7 @@ struct LingoState {
 	// Can be swapped out when another script gets called with priority.
 	// Call frames are pushed and popped from the callstack with
 	// pushContext and popContext.
+	Common::SharedPtr<LingoCollection> coll;
 	Common::Array<CFrame *> callstack;		// call stack
 	uint pc = 0;							// current program counter
 	ScriptData *script = nullptr;			// current Lingo script

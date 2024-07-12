@@ -540,6 +540,7 @@ bool Lingo::processEvent(LEvent event, ScriptType st, CastMemberID scriptId, int
 	if (script && script->_eventHandlers.contains(event)) {
 		debugC(1, kDebugEvents, "Lingo::processEvent(%s, %s, %s): executing event handler", _eventHandlerTypes[event], scriptType2str(st), scriptId.asString().c_str());
 		g_debugger->eventHook(event);
+		_state->coll = _vm->getCurrentMovie()->getLingoColl();
 		LC::call(script->_eventHandlers[event], 0, false);
 		return execute();
 	} else {
