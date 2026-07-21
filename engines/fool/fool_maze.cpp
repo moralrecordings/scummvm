@@ -79,7 +79,7 @@ void FoolGame::mazeRun() {
 		}
 	}
 	// 136:02ce
-	sub_128_bde(1, arr_i16_1eb8[17], 0, 1, 0, 1);
+	screenZap(1, arr_i16_1eb8[17], 0, 1, 0, 1);
 
 	Common::Rect playArea;
 	playArea.top = _screenGrid[1].top + 3;
